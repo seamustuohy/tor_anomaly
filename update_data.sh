@@ -32,8 +32,13 @@ readonly PROG_DIR=$(readlink -m $(dirname $0))
 
 main() {
     cd $PROG_DIR
+    # Update the data branch
     git checkout data
     git pull origin data
+
+    # Get the current version of the scripts
+    git checkout master detector.py
+    git checkout master split_countries.py
     mkdir -p data
     cd data
     curl -O https://metrics.torproject.org/stats/clients.csv
