@@ -39,6 +39,7 @@ main() {
     # Get the current version of the scripts
     git checkout master detector.py
     git checkout master split_countries.py
+    git checkout master country_info.py
     mkdir -p data
     cd data
     curl -O https://metrics.torproject.org/stats/clients.csv
