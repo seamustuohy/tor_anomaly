@@ -33,7 +33,7 @@ readonly PROG_DIR=$(readlink -m $(dirname $0))
 main() {
     cd $PROG_DIR
     git checkout data
-    #git pull
+    git pull
     mkdir -p data
     cd data
     curl -O https://metrics.torproject.org/stats/clients.csv
