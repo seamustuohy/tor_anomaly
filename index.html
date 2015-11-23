@@ -277,7 +277,7 @@
              document.getElementById('twit_link').innerHTML = '';
 
              //Add new elements
-             d3.csv(("https://raw.githubusercontent.com/elationfoundation/tor_anomaly/master/countries/" + country_code + ".tsv"), function(error, data) {
+             d3.csv(("https://raw.githubusercontent.com/elationfoundation/tor_anomaly/data/data/" + country_code + ".tsv"), function(error, data) {
                  if (error) throw error;
 
                  data.forEach(function(d) {
