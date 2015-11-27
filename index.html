@@ -31,6 +31,7 @@
 
      .area {
          fill: lightblue;
+         clip-path: url(#clip);
      }
 
 
@@ -226,41 +227,91 @@
         <script>
          // D3 Javascript
 
-         var margin = {top: 20, right: 20, bottom: 30, left: 50},
+         var margin = {top: 20, right: 20, bottom: 200, left: 50},
+             margin_brush = {top: 500, right: 20, bottom: 30, left: 50},
              width = 960 - margin.left - margin.right,
-             height = 500 - margin.top - margin.bottom;
+             height = 600 - margin.top - margin.bottom,
+             height_brush = 600 - margin_brush.top - margin_brush.bottom;
 
          var parseDate = d3.time.format("%Y-%m-%d").parse;
 
          var x = d3.time.scale()
                    .range([0, width]);
 
+         var x_brush = d3.time.scale()
+                   .range([0, width]);
+
          var y = d3.scale.linear()
                    .range([height, 0]);
 
+         var y_brush = d3.scale.linear()
+                   .range([height_brush, 0]);
+
          var xAxis = d3.svg.axis()
                        .scale(x)
+                       .orient("bottom");
+
+         var xAxis_brush = d3.svg.axis()
+                       .scale(x_brush)
                        .orient("bottom");
 
          var yAxis = d3.svg.axis()
                        .scale(y)
                        .orient("left");
 
+         var brush = d3.svg.brush()
+                       .x(x_brush)
+                       .on("brush", brushed);
+
          var line = d3.svg.line()
                       .x(function(d) { return x(d.date);  })
                       .y(function(d) { return y(d.users); });
 
+         var line_brush = d3.svg.line()
+                      .x(function(d) { return x_brush(d.date);  })
+                      .y(function(d) { return y_brush(d.users); });
 
          var area = d3.svg.area()
                       .x(function(d) { return x(d.date); })
                       .y0(function(d) { return y(d.min); })
                       .y1(function(d) { return y(d.max); });
 
+         var area_brush = d3.svg.area()
+                            .x(function(d) { return x_brush(d.date); })
+                            .y0(function(d) { return y_brush(d.min); })
+                            .y1(function(d) { return y_brush(d.max); });
+
+
          var svg = d3.select("body").append("svg")
                      .attr("width", width + margin.left + margin.right)
-                     .attr("height", height + margin.top + margin.bottom)
-                     .append("g")
-                     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+                     .attr("height", height + margin.top + margin.bottom);
+
+         svg.append("defs").append("clipPath")
+                       .attr("id", "clip")
+                       .append("rect")
+                       .attr("width", width)
+                       .attr("height", height);
+
+         function brushed() {
+             x.domain(brush.empty() ? x_brush.domain() : brush.extent());
+             focus.select(".area").attr("d", area);
+             focus.select(".line").attr("d", line);
+             focus.selectAll(".spike")
+                  .attr("cx", function(d) { return x(d.date);  })
+                  .attr("cy", function(d) { return y(d.users); });
+             focus.selectAll(".drop")
+                  .attr("cx", function(d) { return x(d.date);  })
+                  .attr("cy", function(d) { return y(d.users); });
+             focus.select(".x.axis").call(xAxis);
+         };
+
+         function type(d) {
+             d.date = parseDate(d.date);
+             d.price = +d.price;
+             return d;
+         };
+
+
          d3.select('#country_picker')
            .on('change', function() {
                //console.log(d3.select(this).property('value'))
@@ -269,14 +320,26 @@
                update(country_code);
            });
 
+         //Add new elements
+         var focus = svg.append("g")
+                        .attr("class", "focus")
+                        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+         // Add brush element
+         var context = svg.append("g")
+                          .attr("class", "context")
+                          .attr("transform", "translate(" + margin_brush.left + "," + margin_brush.top + ")");
+
+
          function update(country_code) {
 
              // Clear all existing content
-             svg.selectAll("*").remove();
+             focus.selectAll("*").remove();
+             context.selectAll("*").remove();
              document.getElementById('goo_link').innerHTML = '';
              document.getElementById('twit_link').innerHTML = '';
 
-             //Add new elements
+             //Grab Data and Draw
              d3.csv(("https://raw.githubusercontent.com/elationfoundation/tor_anomaly/data/data/" + country_code + ".tsv"), function(error, data) {
                  if (error) throw error;
 
@@ -292,17 +355,20 @@
                  });
 
                  //console.log("01");
+                 var clip_buffer = 1.25
                  x.domain(d3.extent(data, function(d) { return d.date; }));
-                 y.domain(d3.extent(data, function(d) { return d.users; }));
+                 y.domain(d3.extent(data, function(d) { return (d.users * clip_buffer); }));
+                 x_brush.domain(x.domain());
+                 y_brush.domain(y.domain());
 
-                 svg.append("g")
+                 focus.append("g")
                     .attr("class", "x axis")
                     .attr("transform", "translate(0," + height + ")")
                     .call(xAxis);
 
                  //console.log("02");
 
-                 svg.append("g")
+                 focus.append("g")
                     .attr("class", "y axis")
                     .call(yAxis)
                     .append("text")
@@ -315,13 +381,13 @@
                  //console.log("03");
 
                  //Draw Min/Max area
-                 svg.append("path")
+                 focus.append("path")
                     .datum(data)
                     .attr("class", "area")
                     .attr("d", area);
 
                  //Draw Actual Users Number Line
-                 svg.append("path")
+                 focus.append("path")
                     .datum(data)
                     .attr("class", "line")
                     .attr("d", line);
@@ -332,7 +398,7 @@
                                 .data(data).enter();
 
                  //Spikes
-                 svg.selectAll("spike")
+                 focus.selectAll("spike")
                     .data(data.filter(function(d) { return d.spiked == 1}))
                     .enter().append("circle")
                     .attr("class", "spike")
@@ -349,7 +415,7 @@
                     });;
 
                  //Drop (Censorship)
-                 svg.selectAll("drop")
+                 focus.selectAll("drop")
                     .data(data.filter(function(d) { return d.censored == 1}))
                     .enter().append("circle")
                     .attr("class", "drop")
@@ -364,6 +430,32 @@
                                 "censor",
                                 this.getAttribute("countryCode"));
                     });
+
+                 //Adding the Brush in
+
+                 context.append("g")
+                      .attr("class", "x axis")
+                      .attr("transform", "translate(0," + height_brush + ")")
+                      .call(xAxis);
+
+                 //Draw Min/Max area
+                 context.append("path")
+                          .datum(data)
+                          .attr("class", "area")
+                          .attr("d", area_brush);
+
+                 //Draw Actual Users Number Line
+                 context.append("path")
+                      .datum(data)
+                      .attr("class", "line")
+                        .attr("d", line_brush);
+
+                 context.append("g")
+                        .attr("class", "x brush")
+                        .call(brush)
+                        .selectAll("rect")
+                        .attr("y", -6)
+                        .attr("height", height_brush + 7);
              })};
         </script>
         <h3> Click on a green or red dot in a graph to get links to possible censorship events on that date.</h3>
