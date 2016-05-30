@@ -361,6 +361,7 @@
                      context.selectAll("*").remove();
                      document.getElementById('goo_link').innerHTML = '';
                      document.getElementById('twit_link').innerHTML = '';
+                     document.getElementById('content_date').innerHTML = '';
 
                      //Grab Data and Draw
                      d3.csv(("https://raw.githubusercontent.com/elationfoundation/tor_anomaly/data/data/" + country_code + ".tsv"), function(error, data) {
