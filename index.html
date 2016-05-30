@@ -39,7 +39,6 @@
      .research_links {
          display: inline;
          margin-left: 25%;
-         padding-bottom: 25px;
      }
      .sub_section {
          border: solid 1px #eee;
@@ -52,6 +51,7 @@
          margin:auto;
          display:table;
      }
+     .bigbooty {padding-bottom: 25px;}
     </style>
 
     <body>
@@ -66,7 +66,7 @@
                     <div id="twit_link" class="link_boxes"></div>
                     <div id="goo_link" class="link_boxes"></div>
                 </div>
-                <div class="notice">
+                <div class="notice bigbooty">
                     <strong > Click on a green or red dot in a graph to get links to possible censorship events on that date.</strong>
                 </div>
             </div>
@@ -487,5 +487,8 @@
 
                 </script>
             </div>
+        </div>
+        <div class="sub_section">
+            This is a <a href="https://github.com/elationfoundation/tor_anomaly">rewrite</a> and <a href="https://metrics.torproject.org/userstats-relay-country.html">new interactive data-visualization</a> of the Tor projects <a href="https://research.torproject.org/techreports/detector-2011-09-09.pdf">anomaly-based censorship-detection system.</a> I took on this side-project after hearing that multiple statisticians had attempted to update the code, but had given up because the <a href="https://gitweb.torproject.org/metrics-web.git/tree/modules/clients/detector.py">existing code-base was complex and badly documented.</a> I focused on making the existing code cleaner and comprehensively documented. I used the high-performance data analysis library pandas in the rewrite which speed up the data analysis considerably and allowed me to integrate previously external “preparation” scripts written in R directly into the code.
         </div>
     </body>
