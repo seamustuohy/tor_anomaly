@@ -33,16 +33,20 @@
          margin: 0 auto;
          padding: 0 10px;
      }
-     #twit_link{
-         display: inline-block;
+     #twit_link {
          margin-right: 15px;
      }
-     #goo_link{
-         display: inline-block;
+     .research_links {
+         display: inline;
+         margin: 25%;
      }
      .sub_section {
          border: solid 1px #eee;
          border-bottom: solid 1px #ccc;
+     }
+     #content_date {
+         margin:auto;
+         display:table;
      }
     </style>
 
@@ -54,8 +58,10 @@
             <p>Select a country from the drop down to get started.</p>
             <div id="anomaly_info" class="sub_section">
                 <div id="content_date"></div><br />
-                <div id="twit_link"></div><br />
-                <div id="goo_link"></div><br />
+                <div class="research_links">
+                    <div id="twit_link"></div><br />
+                    <div id="goo_link"></div><br />
+                </div>
             </div>
             <strong> Click on a green or red dot in a graph to get links to possible censorship events on that date.</strong>
             <div id="viz_frame" class="sub_section">
