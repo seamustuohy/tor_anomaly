@@ -45,15 +45,12 @@
          border: solid 1px #eee;
          border-bottom: solid 1px #ccc;
      }
-     #content_date {
-         margin:auto;
-         display:table;
-     }
      .link_boxes {
          display: inline-block;
      }
      .notice {
-         padding: 5px;
+         margin:auto;
+         display:table;
      }
     </style>
 
@@ -64,12 +61,14 @@
             <select id = "country_picker"> </select>
             <p>Select a country from the drop down to get started.</p>
             <div id="anomaly_info" class="sub_section">
-                <div id="content_date"></div>
+                <div id="content_date" class="notice"></div>
                 <div class="research_links">
                     <div id="twit_link" class="link_boxes"></div>
                     <div id="goo_link" class="link_boxes"></div>
                 </div>
-                <strong class="notice"> Click on a green or red dot in a graph to get links to possible censorship events on that date.</strong>
+                <div class="notice">
+                    <strong > Click on a green or red dot in a graph to get links to possible censorship events on that date.</strong>
+                </div>
             </div>
             <div id="viz_frame" class="sub_section">
                 <script>
