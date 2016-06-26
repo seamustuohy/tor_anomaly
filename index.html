@@ -365,7 +365,7 @@
                      document.getElementById('content_date').innerHTML = '';
 
                      //Grab Data and Draw
-                     d3.csv(("https://raw.githubusercontent.com/elationfoundation/tor_anomaly/data/data/" + country_code + ".tsv"), function(error, data) {
+                     d3.csv(("https://raw.githubusercontent.com/seamustuohy/tor_anomaly/data/data/" + country_code + ".tsv"), function(error, data) {
                          if (error) throw error;
 
                          data.forEach(function(d) {
@@ -489,7 +489,7 @@
                 </script>
             </div>
             <div class="sub_section">
-                This is a <a href="https://github.com/elationfoundation/tor_anomaly">rewrite</a> and <a href="https://metrics.torproject.org/userstats-relay-country.html">new interactive data-visualization</a> of the Tor projects <a href="https://research.torproject.org/techreports/detector-2011-09-09.pdf">anomaly-based censorship-detection system.</a> I took on this side-project after hearing that multiple statisticians had attempted to update the code, but had given up because the <a href="https://gitweb.torproject.org/metrics-web.git/tree/modules/clients/detector.py">existing code-base was complex and badly documented.</a> I focused on making the existing code cleaner and comprehensively documented. I used the high-performance data analysis library pandas in the rewrite which speed up the data analysis considerably and allowed me to integrate previously external “preparation” scripts written in R directly into the code.
+                This is a <a href="https://github.com/seamustuohy/tor_anomaly">rewrite</a> and <a href="https://metrics.torproject.org/userstats-relay-country.html">new interactive data-visualization</a> of the Tor projects <a href="https://research.torproject.org/techreports/detector-2011-09-09.pdf">anomaly-based censorship-detection system.</a> I took on this side-project after hearing that multiple statisticians had attempted to update the code, but had given up because the <a href="https://gitweb.torproject.org/metrics-web.git/tree/modules/clients/detector.py">existing code-base was complex and badly documented.</a> I focused on making the existing code cleaner and comprehensively documented. I used the high-performance data analysis library pandas in the rewrite which speed up the data analysis considerably and allowed me to integrate previously external “preparation” scripts written in R directly into the code.
             </div>
         </div>
     </body>
