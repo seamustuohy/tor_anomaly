@@ -1,6 +1,6 @@
 # tor_anomaly
 
-Tor anomaly detection based off of the detect.py script from the tor-web repository: [A simple visualization page is included.](http://seamustuohy.com/tor_anomaly/) The page is not fully done yet (I don't have filter by date implemented) but, it does the basic visualization of where censorship and spikes occur. I also added cute little date-range specific twitter and google news searches when you click on one of the censorship or spike anomalies.
+Tor anomaly detection based off of the detect.py script from the tor-web repository: [A simple visualization page is included.](http://seamustuohy.com/tor_anomaly/) The page is not fully done yet but, it does the basic visualization of where censorship and spikes occur. I also added cute little date-range specific twitter and google news searches when you click on one of the censorship or spike anomalies.
 
 - [Website for viewing results:](http://seamustuohy.com/tor_anomaly/)
 - [Branch with website code:](https://github.com/elationfoundation/tor_anomaly/tree/gh-pages)
